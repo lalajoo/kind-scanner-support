@@ -1,0 +1,4 @@
+const langs={ko:'한국어',en:'English',ja:'日本語',de:'Deutsch',fr:'Français',es:'Español',it:'Italiano',pt:'Português',hi:'हिन्दी',id:'Bahasa Indonesia',zh:'繁體中文'};
+const picker=document.querySelector('select');for(const[k,v]of Object.entries(langs)){let o=document.createElement('option');o.value=k;o.textContent=v;picker.append(o)}
+const q=new URLSearchParams(location.search),lang=langs[q.get('lang')]?q.get('lang'):(langs[navigator.language.slice(0,2)]?navigator.language.slice(0,2):'en');picker.value=lang;document.documentElement.lang=lang==='zh'?'zh-Hant':lang;picker.onchange=()=>location.search='?lang='+picker.value;
+fetch('content.json').then(r=>r.json()).then(all=>{const d=all[lang];document.querySelectorAll('[data-text]').forEach(el=>el.textContent=d[el.dataset.text]);document.title=d.appName+' — '+d[document.body.dataset.page];document.querySelectorAll('[data-link]').forEach(el=>el.href=el.dataset.link+'?lang='+lang);});
